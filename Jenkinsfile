@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                    . venv/bin/activate
-                   python ./movel_training/preprocess.py
+                   python ./model_training/preprocess.py
                 '''
             }
         }
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 sh '''
                    . venv/bin/activate
-                   python ./movel_training/train.py
+                   python ./model_training/train.py
                 '''
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 sh '''
                    . venv/bin/activate
-                   python ./movel_training/test.py
+                   python ./model_training/test.py
                 '''
             }
         }
