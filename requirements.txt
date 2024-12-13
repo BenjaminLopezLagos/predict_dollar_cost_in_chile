@@ -1,0 +1,8 @@
+dvc
+dvc-s3
+flask
+scikit-learn
+dagshub
+mlflow
+pandas
+openpyxl
