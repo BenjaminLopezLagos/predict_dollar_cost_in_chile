@@ -1,9 +1,11 @@
 pipeline {
     agent any
+    /*
     environment {
         DH_S3_KEY = credentials('dagshub_token')
         DOCKER_HUB_KEY = credentials('dockerhub_token')
     }
+    */
     stages {
         stage('Checkout') {
             steps {
