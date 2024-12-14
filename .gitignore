@@ -3,3 +3,5 @@
 .env
 *.csv
 *joblib
+logs
+__pycache__
