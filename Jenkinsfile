@@ -26,7 +26,7 @@ pipeline {
             steps {
                 sh '''
                    . venv/bin/activate
-                   python ./model_training/data_extraction/scripts/extract_historic_data.py /var/jenkins_home/workspace/model_pipeline/model training/data_extraction/scripts 
+                   python ./model_training/data_extraction/scripts/extract_historic_data.py '/var/jenkins_home/workspace/model_pipeline/model training/data_extraction/scripts' 
                 '''
             }
         }
