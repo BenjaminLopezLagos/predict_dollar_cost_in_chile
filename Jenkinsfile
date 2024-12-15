@@ -46,7 +46,7 @@ pipeline {
         stage('deploy image'){
             steps {
                sh '''
-                   docker build -t benjaminlopezlagos/clp_dollar_prediction -f .
+                   docker build -t benjaminlopezlagos/clp_dollar_prediction .
                    docker login -u benjaminlopezlagos -p ${DOCKER_HUB_KEY}
                    docker push benjaminlopezlagos/clp_dollar_prediction:latest
                 '''
