@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import joblib
+import os
 
 base_train_dir = './model_training'
 
@@ -18,4 +19,5 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # Guardar modelo
+os.makedirs('./model', exist_ok=True)
 joblib.dump(model, f'./model/model.joblib')
