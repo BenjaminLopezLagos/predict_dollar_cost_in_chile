@@ -18,4 +18,4 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # Guardar modelo
-joblib.dump(model, f'{base_train_dir}/model.joblib')
+joblib.dump(model, f'./model/model.joblib')

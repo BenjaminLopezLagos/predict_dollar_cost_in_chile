@@ -1,11 +1,8 @@
 pipeline {
     agent any
-    /*
     environment {
-        DH_S3_KEY = credentials('dagshub_token')
         DOCKER_HUB_KEY = credentials('dockerhub_token')
     }
-    */
     stages {
         stage('Checkout') {
             steps {
@@ -46,10 +43,12 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy Model') {
+        stage('deploy image'){
             steps {
-                sh '''
-                    ls
+               sh '''
+                   docker build -t benjaminlopezlagos/clp_dollar_prediction -f .
+                   docker login -u benjaminlopezlagos -p ${DOCKER_HUB_KEY}
+                   docker push benjaminlopezlagos/clp_dollar_prediction:latest
                 '''
             }
         }

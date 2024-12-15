@@ -1,7 +1,7 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import load_breast_cancer
 from sklearn.metrics import mean_squared_error, r2_score
 import joblib
 
@@ -16,7 +16,7 @@ y = data['usd_to_clp']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Cargar modelo
-model = joblib.load(f'{base_train_dir}/model.joblib')
+model = joblib.load(f'./model/model.joblib')
 
 # Realizar predicciones
 y_pred = model.predict(X_test)
@@ -27,3 +27,5 @@ r2 = r2_score(y_test, y_pred)
 
 print(f"MSE: {mse:.5f}")
 print(f"R2 Score: {r2:.5f}")
+
+print(model.predict(pd.DataFrame(np.array([2024,12,1]).reshape(1, -1), columns=['year', 'month', 'day'])))
