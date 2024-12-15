@@ -28,7 +28,7 @@ task_start = BashOperator(
 
 get_historic_data = PythonOperator(
     task_id=f'get_historic_data',
-    python_callable=lambda: os.system(f'python /opt/airflow/scripts/extract_historic_data.py'),
+    python_callable=lambda: os.system(f'python /opt/airflow/scripts/extract_historic_data.py /opt/airflow/scripts'),
     dag=dag,
 )
 
