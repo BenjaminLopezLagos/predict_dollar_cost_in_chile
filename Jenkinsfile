@@ -22,6 +22,14 @@ pipeline {
                 '''
             }
         }
+        stage('Extract Data') {
+            steps {
+                sh '''
+                   . venv/bin/activate
+                   python ./model_training/data_extraction/scripts/extract_historic_data.py ./model_training/data_extraction/scripts 
+                '''
+            }
+        }
         stage('Preprocess Data') {
             steps {
                 sh '''

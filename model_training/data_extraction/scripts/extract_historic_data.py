@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 import pandas as pd
-import re
+import sys
 
 # Dictionary to map abbreviated month names to month numbers
 month_map = {
@@ -29,30 +29,29 @@ def parse_date(date_str):
     date_obj = datetime.strptime(f"{year}-{month}-01", "%Y-%m-%d")
     return date_obj
 
-# Example usage
-date_str = "Ene.1970"
-parsed_date = parse_date(date_str)
-print(parsed_date)
+def main(storage_path):
+    r = requests.get(f'https://si3.bcentral.cl/Siete/ES/Siete/Cuadro/CAP_TIPO_CAMBIO/MN_TIPO_CAMBIO4/TC_HIST/TC_HIST?cbFechaInicio={1970}&cbFechaTermino={datetime.now().year}&cbFrecuencia=MONTHLY&cbCalculo=NONE&cbFechaBase=')
+    soup = BeautifulSoup(r.content,'lxml')
+    print(soup)
+    table = soup.find('table')
+    usd_cost = table.find_all('td')
+    dates = table.find_all('th')
 
+    stored_dates = []
+    stored_costs = []
 
-r = requests.get(f'https://si3.bcentral.cl/Siete/ES/Siete/Cuadro/CAP_TIPO_CAMBIO/MN_TIPO_CAMBIO4/TC_HIST/TC_HIST?cbFechaInicio={1970}&cbFechaTermino={datetime.now().year}&cbFrecuencia=MONTHLY&cbCalculo=NONE&cbFechaBase=')
-soup = BeautifulSoup(r.content,'lxml')
-print(soup)
-table = soup.find('table')
-usd_cost = table.find_all('td')
-dates = table.find_all('th')
+    for cost, date in zip(usd_cost, dates):
+        try:
+            processed_cost = float(str.replace(cost.text, ',', '.'))
+            processed_date = parse_date(date.text)
+            stored_dates.append(processed_date)
+            stored_costs.append(processed_cost)
+        except:
+            print('invalid row')
 
-stored_dates = []
-stored_costs = []
+    df = pd.DataFrame({'periodo': stored_dates, 'pesos por dolar': stored_costs})
+    df.to_csv(f'{storage_path}/data.csv', ',')
 
-for cost, date in zip(usd_cost, dates):
-    try:
-        processed_cost = float(str.replace(cost.text, ',', '.'))
-        processed_date = parse_date(date.text)
-        stored_dates.append(processed_date)
-        stored_costs.append(processed_cost)
-    except:
-        print('invalid row')
-
-df = pd.DataFrame({'periodo': stored_dates, 'pesos por dolar': stored_costs})
-df.to_csv('/opt/airflow/scripts/data.csv', ',')
+if __name__ == '__main__':
+    where_to_store = sys.argv[1]
+    main(where_to_store)
